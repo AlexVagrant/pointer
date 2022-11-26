@@ -9,11 +9,16 @@ enum RefState {
     Exclusive,
 }
 
+pub struct Ref<'refcell, T> {
+    refcell: &'refcell RefCell<T>,
+}
+
 pub struct RefCell<T> {
     value: UnsafeCell<T>,
     //reference: isize,
     state: Cell<RefState>, // Cell provide an abiliy of mutable shared reference
 }
+
 impl<T> RefCell<T> {
     pub fn new(value: T) -> Self {
         Self {
@@ -53,10 +58,6 @@ impl<T> RefCell<T> {
             None
         }
     }
-}
-
-pub struct Ref<'refcell, T> {
-    refcell: &'refcell RefCell<T>,
 }
 
 // borrow want get a T but now we give it a Ref<T>
